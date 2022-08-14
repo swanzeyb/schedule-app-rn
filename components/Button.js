@@ -1,4 +1,5 @@
-import { TouchableOpacity, Text } from 'react-native'
+import { TouchableOpacity } from 'react-native'
+import Text from './Text'
 import tw from '../tw'
 
 export default function Button({ title, onPress }) {
@@ -7,7 +8,7 @@ export default function Button({ title, onPress }) {
       onPress={onPress}
       style={tw`bg-blue py-2 px-3 rounded shadow`}
     >
-      <Text style={tw`font-body text-white text-sm font-medium`}>{title}</Text>
+      <Text weight="Medium" color="white" style={tw`text-sm`}>{title}</Text>
     </TouchableOpacity>
   )
 }

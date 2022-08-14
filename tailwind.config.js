@@ -6,8 +6,13 @@ module.exports = {
       black: '#202124',
     },
     fontFamily: {
-      display: ['Poppins', 'sans-seriff'],
-      body: ['Roboto', 'sans-seriff'],
+      // Poppins
+      'Poppins_Regular': ['Poppins_Regular', 'sans-seriff'],
+      // Roboto
+      'Roboto_Regular': ['Roboto_Regular', 'sans-seriff'],
+      'Roboto_Medium': ['Roboto_Medium', 'sans-seriff'],
+      // Lato
+      'Lato_Medium': ['Lato_Medium', 'sans-seriff'],
     },
   },
 }
