@@ -15,12 +15,12 @@ import {
 export default function useCustomFonts() {
   const [fontsLoaded] = useFonts({
     // Poppins
-    'Poppins_Regular': Poppins_400Regular,
+    'Poppins_regular': Poppins_400Regular,
     // Roboto
-    'Roboto_Regular': Roboto_400Regular,
-    'Roboto_Medium': Roboto_500Medium,
+    'Roboto_regular': Roboto_400Regular,
+    'Roboto_medium': Roboto_500Medium,
     // Lato
-    'Lato_Medium': Lato_700Bold,
+    'Lato_medium': Lato_700Bold,
   })
 
   return fontsLoaded

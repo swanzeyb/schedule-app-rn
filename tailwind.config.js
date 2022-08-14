@@ -7,12 +7,12 @@ module.exports = {
     },
     fontFamily: {
       // Poppins
-      'Poppins_Regular': ['Poppins_Regular', 'sans-seriff'],
+      'Poppins_regular': ['Poppins_regular', 'sans-seriff'],
       // Roboto
-      'Roboto_Regular': ['Roboto_Regular', 'sans-seriff'],
-      'Roboto_Medium': ['Roboto_Medium', 'sans-seriff'],
+      'Roboto_regular': ['Roboto_regular', 'sans-seriff'],
+      'Roboto_medium': ['Roboto_medium', 'sans-seriff'],
       // Lato
-      'Lato_Medium': ['Lato_Medium', 'sans-seriff'],
+      'Lato_medium': ['Lato_medium', 'sans-seriff'],
     },
   },
 }

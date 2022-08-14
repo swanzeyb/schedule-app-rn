@@ -8,7 +8,7 @@ export default function Button({ title, onPress }) {
       onPress={onPress}
       style={tw`bg-blue py-2 px-3 rounded shadow`}
     >
-      <Text weight="Medium" color="white" style={tw`text-sm`}>{title}</Text>
+      <Text weight="medium" color="white" style={tw`text-sm`}>{title}</Text>
     </TouchableOpacity>
   )
 }

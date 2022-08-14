@@ -14,13 +14,13 @@ export default function Text({ font, weight, color, style, children }) {
 
 Text.propTypes = {
   font: PropTypes.oneOf(['Poppins', 'Roboto', 'Lato']),
-  weight: PropTypes.oneOf(['Regular', 'Medium']),
+  weight: PropTypes.oneOf(['regular', 'medium']),
   color: PropTypes.string,
 }
 
 Text.defaultProps = {
   font: 'Roboto',
-  weight: 'Regular',
+  weight: 'regular',
   color: 'black',
   style: {},
 }
