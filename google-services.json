@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "453659831313-0hobjbssmccn8pvkhi3rj86vb2aeqqcg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flourish.schedule",
+            "certificate_hash": "35d00f966a680cedc435f6349a2c553e35119d6e"
+          }
+        },
+        {
           "client_id": "453659831313-n5schdcd7u7mcm8k3l2sr0643f3mpqdm.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "453659831313-n5schdcd7u7mcm8k3l2sr0643f3mpqdm.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "453659831313-kfui32ujd8g9s2guah3stgaf9gn3b0f4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flourish.schedule"
+              }
             }
           ]
         }
