@@ -4,22 +4,27 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { preventAutoHideAsync, hideAsync } from 'expo-splash-screen'
-import { useCustomFonts } from './hooks'
+import { useCustomFonts, useGoogleSignIn } from './hooks'
 
 // Keep splash screen up until loading finished
 preventAutoHideAsync()
 
+// Main navigation stack
 const Stack = createNativeStackNavigator()
 
+// Main App Screens
 import {
-  HomeScreen
+  HomeScreen,
+  ConfirmScreen,
 } from './screens'
 
 // Example of loading assets before showing the app:
 // https://docs.expo.dev/versions/latest/sdk/splash-screen/
 
 export default function App() {
-  const appReady = useCustomFonts()
+  const { authReady } = useGoogleSignIn()
+  const fontsReady = useCustomFonts()
+  const appReady = authReady && fontsReady
 
   const onRootLayout = useCallback(async () => {
     if (appReady) {
@@ -40,6 +45,7 @@ export default function App() {
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Confirm" component={ConfirmScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

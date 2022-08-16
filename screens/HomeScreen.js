@@ -1,25 +1,46 @@
-import { useState } from 'react'
+// import { useCallback } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { View, Image, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, Text } from '../components'
+import { useGoogleSignIn } from '../hooks'
 import tw from '../tw'
 
 const LogoSrc = require('../assets/logo.png')
 
 export default function HomeScreen({ navigation: { navigate } }) {
-  const [isAuthed] = useState(false)
+  const { user, signIn } = useGoogleSignIn()
 
-  const signIn = () => navigate('Camera')
+  const onSignIn = () => {
+    signIn()
+      .then(result => {
+        if (result.error && !result.userError) {
+          Alert.alert(
+            'Please Try Again',
+            'There was an unexpected error, please try again.',
+            { text: 'OK' }
+          )
+        }
+        if (result.user) {
+          navigate('Confirm', {
+            title: 'Sign In\nSuccessful',
+            button: 'Continue',
+            nextScreen: 'Scanner',
+          })
+        }
+      })
+  }
 
   const addSchedule = () => {
-    if (!isAuthed) {
+    if (!user) {
       Alert.alert(
         'Sign In',
         'To continue, please sign in with the Google account tied to your calendar.', [
         { text: 'CANCEL', style: 'cancel' },
-        { text: 'SIGN IN', onPress: signIn }
+        { text: 'SIGN IN', onPress: onSignIn }
       ])
+    } else {
+      navigate('Scanner')
     }
   }
 

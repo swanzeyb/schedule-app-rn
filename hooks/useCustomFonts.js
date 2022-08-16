@@ -13,7 +13,7 @@ import {
 } from '@expo-google-fonts/lato'
 
 export default function useCustomFonts() {
-  const [fontsLoaded] = useFonts({
+  const [fontsReady] = useFonts({
     // Poppins
     'Poppins_regular': Poppins_400Regular,
     // Roboto
@@ -23,5 +23,5 @@ export default function useCustomFonts() {
     'Lato_medium': Lato_700Bold,
   })
 
-  return fontsLoaded
+  return fontsReady
 }
