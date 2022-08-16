@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "453659831313",
+    "project_id": "schedule-25096",
+    "storage_bucket": "schedule-25096.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453659831313:android:497b5b6236c16c874995b0",
+        "android_client_info": {
+          "package_name": "com.flourish.schedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453659831313-n5schdcd7u7mcm8k3l2sr0643f3mpqdm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl01t3fkaJwO_BZ5XlvKXrPuMKaSFiwc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453659831313-n5schdcd7u7mcm8k3l2sr0643f3mpqdm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
