@@ -1,0 +1,163 @@
+[debug] [2022-08-18T23:23:58.201Z] ----------------------------------------------------------------------
+[debug] [2022-08-18T23:23:58.202Z] Command:       /Users/ben/.nvm/versions/node/v16.13.1/bin/node /Users/ben/.nvm/versions/node/v16.13.1/bin/firebase emulators:start --only functions
+[debug] [2022-08-18T23:23:58.202Z] CLI Version:   11.7.0
+[debug] [2022-08-18T23:23:58.202Z] Platform:      darwin
+[debug] [2022-08-18T23:23:58.202Z] Node Version:  v16.13.1
+[debug] [2022-08-18T23:23:58.205Z] Time:          Thu Aug 18 2022 16:23:58 GMT-0700 (Pacific Daylight Time)
+[debug] [2022-08-18T23:23:58.205Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-08-18T23:23:58.240Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-08-18T23:23:58.241Z] > authorizing via signed-in user (corefinder.er@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2022-08-18T23:23:58.249Z] [hub] writing locator at /var/folders/7d/kqjz6yn11ds8b_shk6hsxhrh0000gn/T/hub-schedule-25096.json
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, hosting, pubsub, storage, eventarc {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, hosting, pubsub, storage, eventarc\u001b[22m"}}
+[info] ✔  functions: Using node@16 from host. {"metadata":{"emulator":{"name":"functions"},"message":"Using node@16 from host."}}
+[debug] [2022-08-18T23:23:58.265Z] defaultcredentials: writing to file /Users/ben/.config/firebase/corefinder_er_gmail.com_application_default_credentials.json
+[debug] [2022-08-18T23:23:58.266Z] Setting GAC to /Users/ben/.config/firebase/corefinder_er_gmail.com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /Users/ben/.config/firebase/corefinder_er_gmail.com_application_default_credentials.json"}}
+[debug] [2022-08-18T23:23:58.266Z] > refreshing access token with scopes: []
+[debug] [2022-08-18T23:23:58.267Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2022-08-18T23:23:58.267Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2022-08-18T23:23:58.945Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2022-08-18T23:23:58.945Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2022-08-18T23:23:58.959Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/schedule-25096/adminSdkConfig [none]
+[debug] [2022-08-18T23:23:59.709Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/schedule-25096/adminSdkConfig 200
+[debug] [2022-08-18T23:23:59.709Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/schedule-25096/adminSdkConfig {"projectId":"schedule-25096","storageBucket":"schedule-25096.appspot.com"}
+[debug] [2022-08-18T23:23:59.738Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2022-08-18T23:23:59.739Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2022-08-18T23:23:59.739Z] Starting Emulator UI with command {"binary":"node","args":["/Users/ben/.cache/firebase/emulators/ui-v1.9.0/server/server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/Users/ben/.cache/firebase/emulators/ui-v1.9.0/server/server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2022-08-18T23:23:59.823Z] Web / API server started at localhost:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at localhost:4000\n"}}
+[info] i  functions: Watching "/Users/ben/code/schedule-app/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/Users/ben/code/schedule-app/functions\" for Cloud Functions..."}}
+[debug] [2022-08-18T23:24:00.011Z] Validating nodejs source
+[debug] [2022-08-18T23:24:00.809Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-08-18T23:24:00.809Z] Building nodejs source
+[debug] [2022-08-18T23:24:00.809Z] Analyzing nodejs backend spec
+[debug] [2022-08-18T23:24:00.811Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-08-18T23:24:00.912Z] Serving at port 9005
+
+[debug] [2022-08-18T23:24:00.943Z] Got response from /__/functions.yaml Failed to generate manifest from function source: Error: Cannot find module '@google-cloud/vision'
+Require stack:
+- /Users/ben/code/schedule-app/functions/index.js
+- /Users/ben/code/schedule-app/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/ben/code/schedule-app/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+[debug] [2022-08-18T23:24:00.944Z] Failed to parse functions.yamlincomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line at line 1, column 56:
+     ... fest from function source: Error: Cannot find module '@google-cl ... 
+                                         ^ {"name":"YAMLException","reason":"incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line","mark":{"name":null,"buffer":"Failed to generate manifest from function source: Error: Cannot find module '@google-cloud/vision'\nRequire stack:\n- /Users/ben/code/schedule-app/functions/index.js\n- /Users/ben/code/schedule-app/functions/node_modules/firebase-functions/lib/runtime/loader.js\n- /Users/ben/code/schedule-app/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js\n\u0000","position":55,"line":0,"column":55},"message":"incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line at line 1, column 56:\n     ... fest from function source: Error: Cannot find module '@google-cl ... \n                                         ^"}
+[debug] [2022-08-18T23:24:00.946Z] shutdown requested via /__/quitquitquit
+
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Failed to load function definition from source: Failed to generate manifest from function source: Error: Cannot find module '@google-cloud/vision'
+Require stack:
+- /Users/ben/code/schedule-app/functions/index.js
+- /Users/ben/code/schedule-app/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/ben/code/schedule-app/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Failed to load function definition from source: Failed to generate manifest from function source: Error: Cannot find module '@google-cloud/vision'\nRequire stack:\n- /Users/ben/code/schedule-app/functions/index.js\n- /Users/ben/code/schedule-app/functions/node_modules/firebase-functions/lib/runtime/loader.js\n- /Users/ben/code/schedule-app/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js"}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4000                │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ localhost:5001 │ http://localhost:4000/functions │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2022-08-18T23:24:17.554Z] File /Users/ben/code/schedule-app/functions/package-lock.json changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/ben/code/schedule-app/functions/package-lock.json changed, reloading triggers"}}
+[debug] [2022-08-18T23:24:17.554Z] File /Users/ben/code/schedule-app/functions/package.json changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/ben/code/schedule-app/functions/package.json changed, reloading triggers"}}
+[debug] [2022-08-18T23:24:18.557Z] Validating nodejs source
+[debug] [2022-08-18T23:24:19.217Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@google-cloud/vision": "^2.4.2",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-08-18T23:24:19.218Z] Building nodejs source
+[debug] [2022-08-18T23:24:19.218Z] Analyzing nodejs backend spec
+[debug] [2022-08-18T23:24:19.218Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-08-18T23:24:19.304Z] Serving at port 9005
+
+[debug] [2022-08-18T23:24:19.637Z] Got response from /__/functions.yaml {"endpoints":{"helloWorld":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"helloWorld"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-08-18T23:24:19.640Z] shutdown requested via /__/quitquitquit
+
+[info] ✔  functions: Loaded functions definitions from source: helloWorld. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: helloWorld."}}
+[info] ✔  functions[us-central1-helloWorld]: http function initialized (http://localhost:5001/schedule-25096/us-central1/helloWorld). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5001/schedule-25096/us-central1/helloWorld)."}}
+[debug] [2022-08-18T23:25:34.793Z] File /Users/ben/code/schedule-app/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/ben/code/schedule-app/functions/index.js changed, reloading triggers"}}
+[debug] [2022-08-18T23:25:35.801Z] Validating nodejs source
+[debug] [2022-08-18T23:25:36.597Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@google-cloud/vision": "^2.4.2",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-08-18T23:25:36.597Z] Building nodejs source
+[debug] [2022-08-18T23:25:36.597Z] Analyzing nodejs backend spec
+[debug] [2022-08-18T23:25:36.598Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-08-18T23:25:36.689Z] Serving at port 9005
+
+[debug] [2022-08-18T23:25:36.895Z] Got response from /__/functions.yaml {"endpoints":{"helloWorld":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"helloWorld"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-08-18T23:25:36.897Z] shutdown requested via /__/quitquitquit
+
+[info] ✔  functions: Loaded functions definitions from source: helloWorld. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: helloWorld."}}
