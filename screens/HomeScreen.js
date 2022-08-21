@@ -4,7 +4,6 @@ import { View, Image, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker'
 import functions from '@react-native-firebase/functions'
-import { useEffect } from 'react'
 import { Button, Text } from '../components'
 import { useGoogleSignIn } from '../hooks'
 import tw from '../tw'
@@ -37,45 +36,20 @@ export default function HomeScreen({ navigation: { navigate } }) {
   const pickImage = async () => {
     const fns = functions() //'us-central1'
     fns.useEmulator('100.114.76.77', 5001)
-    const helloWorld = fns.httpsCallable('helloWorld')
+    const detectShifts = fns.httpsCallable('detectShifts')
 
     const base64 = await launchImageLibraryAsync({
         mediaTypes: MediaTypeOptions.Images,
-        allowsEditing: false,
+        allowsEditing: true,
         base64: true,
         quality: 1,
       }).then(result => {
         if (!result.cancelled) return result.base64
       })
 
-    helloWorld({ imgBase64: base64 })
-      .then(({ data }) => console.log(data))
+    detectShifts({ imgBase64: base64 })
+      .then(({ data }) => navigate('Shifts', { shifts: data }))
       .catch(err => console.log(err))
-    // return launchImageLibraryAsync({
-    //   mediaTypes: MediaTypeOptions.Images,
-    //   allowsEditing: true,
-    //   quality: 1,
-    // })
-    //   .then((result) => {
-    //     if (!result.cancelled) {
-    //       // const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-    //       const form = new FormData()
-    //       form.append('any', { uri: result.uri, name: 'schedule.jpg', type: 'image/jpeg' })
-    //       form.append('viewport', JSON.stringify({ width: result.width, height: result.height }))
-    //       fetch('http://192.168.0.115:1449/text', {
-    //         method: 'post',
-    //         headers: {
-    //           'Content-Type': 'multipart/form-data',
-    //         },
-    //         body: form
-    //       }).then(async response => {
-    //         const value = await response.json()
-    //         console.log(`\n${JSON.stringify(value['text'], null, 2)}\n`)
-    //       }).catch(err => {
-    //         console.log(err)
-    //       })
-    //     }
-    //   })
   }
 
   const addSchedule = () => {

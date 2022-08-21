@@ -4,22 +4,10 @@ const vision = require('@google-cloud/vision')
 // Instantiate a vision client
 const client = new vision.ImageAnnotatorClient()
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info('Hello logs!', {structuredData: true})
-//   response.send('Hello from Firebase!')
-// })
-
-exports.helloWorld = functions.https.onCall(async (data, ctx) => {
-  if (!ctx.auth) {
-    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
-  }
-
+async function detectText(imgBase64) {
   const results = await client.annotateImage({
     image: {
-      content: data.imgBase64,
+      content: imgBase64,
     },
     features: [{type: 'DOCUMENT_TEXT_DETECTION'}],
   })
@@ -45,8 +33,53 @@ exports.helloWorld = functions.https.onCall(async (data, ctx) => {
         if (str.length > 1) text.push(str)
       }
     }
-    return { text }
+    return text
   }
 
-  return { text: [] }
+  return []
+}
+
+const dayCodes = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+async function extractShifts(text) {
+  const days = []
+  const times = []
+
+  for (const [_, line] of text.entries()) {
+    const isDay = dayCodes.some(code => line.includes(code))
+    if (isDay) {
+      const dayNum = (line.match(/\d{2}/g) || [])[0]
+      if (dayNum) days.push(Number(dayNum))
+      continue
+    }
+    const isShift = line.match(/\d{2}:\d{2} (AM|PM)/g) || []
+    if (isShift.length === 2) {
+      times.push(isShift)
+      continue
+    }
+    const isNoShift = line.includes('No Shift')
+    if (isNoShift) {
+      times.push('No Shift')
+      continue
+    }
+  }
+
+  const shifts = {}
+  if (days.length === times.length) {
+    for (const [i, day] of days.entries()) {
+      const shift = times[i]
+      shifts[day] = shift
+    }
+  }
+  return shifts
+}
+
+exports.detectShifts = functions.https.onCall(async (data, ctx) => {
+  if (!ctx.auth) {
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
+  }
+  const text = await detectText(data.imgBase64)
+  const shifts = await extractShifts(text)
+  console.log(shifts)
+  return shifts
 })
