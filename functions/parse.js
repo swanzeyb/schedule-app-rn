@@ -3,8 +3,6 @@
   Outcome: Group all data related to a work shift together.
 */
 
-const skmeans = require("skmeans")
-
 // This constant defines how much two blocks can differ
 // in their y value, and still be considered part of the
 // same row.
@@ -51,29 +49,28 @@ function ocrResultsToBlocks(results) {
   return blocks
 }
 
-function numberOfClusters(blocks) {
-  // let clusters = 0
-  // for (const [_, block] of Object.entries(blocks)) {
-  //   for (const [_, word] of Object.entries(block.text)) {
-  //     // The constant 'word' might be confusing here
-  //     // because 'word' may contain multiple words
-  //     const isShift = (word.match(/\d{2}:\d{2} (AM|PM)/g) || []).length === 2
-  //     if (isShift) clusters += 1
-  //   }
-  // }
-  // return clusters
-  return blocks.length
-}
-
 function blocksToRows(blocks) {
-  const k = numberOfClusters(blocks)
-  const data = blocks.map(block => block.minY)
-  const { idxs } = skmeans(data, k)
   const rows = []
 
-  for (const [blockIndex, rowIndex] of Object.entries(idxs)) {
-    rows[rowIndex] = rows[rowIndex] || []
-    rows[rowIndex].push(blocks[blockIndex].text)
+  for (const [_, block] of Object.entries(blocks)) {
+    for (const [_, word] of Object.entries(block.text)) {
+      // The constant 'word' might be confusing here because
+      // 'word' may contain multiple words in a single string
+      const isShift = (word.match(/\d{2}:\d{2} (AM|PM)/g) || []).length === 2
+      if (isShift) {
+        const row = []
+        // If this block contains a shift, find other blocks within
+        // a similar y value, which is considered the same row.
+        for (const [_, test] of Object.entries(blocks)) {
+          if (Math.abs(block.minY - test.minY) <= ROW_Y_TOLERANCE) {
+            row.push(test.text)
+          }
+        }
+
+        if (row.length > 0) rows.push(row)
+        break
+      }
+    }
   }
 
   return rows
