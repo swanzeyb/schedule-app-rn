@@ -2,8 +2,10 @@ module.exports = {
   theme: {
     colors: {
       blue: '#1A73E8',
+      green: '#33B679',
       white: '#FFFFFF',
       black: '#202124',
+      gray: '#5F6368',
     },
     fontFamily: {
       // Poppins
