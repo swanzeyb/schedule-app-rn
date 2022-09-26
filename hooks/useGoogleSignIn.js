@@ -41,6 +41,10 @@ function signIn() {
   })
 }
 
+function getTokens() {
+  return GoogleSignin.getTokens()
+}
+
 export default function useGoogleAuth() {
   const [authReady, setAuthReady] = useState(false)
   const [user, setUser] = useState(null)
@@ -53,5 +57,5 @@ export default function useGoogleAuth() {
     return subscriber 
   })
 
-  return { authReady, signIn, user }
+  return { authReady, signIn, user, getTokens }
 }
