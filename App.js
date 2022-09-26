@@ -16,6 +16,7 @@ const Stack = createNativeStackNavigator()
 import {
   HomeScreen,
   ConfirmScreen,
+  ShiftsScreen,
 } from './screens'
 
 // Example of loading assets before showing the app:
@@ -44,8 +45,13 @@ export default function App() {
           initialRouteName="Home"
           screenOptions={{ headerShown: false }}
         >
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Confirm" component={ConfirmScreen} />
+          <Stack.Group>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Confirm" component={ConfirmScreen} />
+          </Stack.Group>
+          <Stack.Group screenOptions={{ presentation: 'modal' }}>
+            <Stack.Screen name="Shifts" component={ShiftsScreen} />
+          </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

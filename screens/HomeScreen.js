@@ -27,7 +27,7 @@ export default function HomeScreen({ navigation: { navigate } }) {
           navigate('Confirm', {
             title: 'Sign In\nSuccessful',
             button: 'Continue',
-            nextScreen: 'Scanner',
+            nextScreen: 'Home',
           })
         }
       })
@@ -38,16 +38,17 @@ export default function HomeScreen({ navigation: { navigate } }) {
     fns.useEmulator('100.114.76.77', 5001)
     const detectShifts = fns.httpsCallable('detectShifts')
 
-    const base64 = await launchImageLibraryAsync({
+    const imgBase64 = await launchImageLibraryAsync({
         mediaTypes: MediaTypeOptions.Images,
-        allowsEditing: true,
+        // allowsEditing: true,
         base64: true,
         quality: 1,
       }).then(result => {
         if (!result.cancelled) return result.base64
+        // if (!result.cancelled) return `data:image/jpeg;base64,${result.base64}`
       })
 
-    detectShifts({ imgBase64: base64 })
+    detectShifts({ imgBase64 })
       .then(({ data }) => navigate('Shifts', { shifts: data }))
       .catch(err => console.log(err))
   }
