@@ -76,7 +76,43 @@ function blocksToRows(blocks) {
   return rows
 }
 
+function to24HRFormat(time) {
+  const hrOffset = time.substr(-2) === 'PM' ? 12 : 0
+  const hour = Number(time.substr(0, 2)) + hrOffset
+  const rawMin = time.substr(3, 2)
+  const minute = rawMin.length < 2 ? `${rawMin}0` : rawMin
+  return `${hour}:${minute}`
+}
+
+function rowsToShifts(rows) {
+  const shifts = []
+
+  for (const [_, row] of Object.entries(rows)) {
+    const day = row[0]?.[1]
+    const times = row[1]?.[0]
+    let [start, end] = times.match(/\d{2}:\d{2} (AM|PM)/g) || []
+    const location = row[1]?.[2]
+
+    // Only continue if this row contains all of the string parts of a shift
+    const hasAllParts = [day, start, end, location]
+      .some(part => part !== undefined)
+
+    if (hasAllParts) {
+      // Convert times to 24hr format
+      start = to24HRFormat(start)
+      end = to24HRFormat(end)
+
+      shifts.push({
+        day, start, end, location,
+      })
+    }
+  }
+
+  return shifts
+}
+
 module.exports = {
   ocrResultsToBlocks,
   blocksToRows,
+  rowsToShifts
 }
