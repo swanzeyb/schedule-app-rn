@@ -25,7 +25,7 @@ async function detectText(imgBase64) {
   const rows = blocksToRows(blocks)
   const shifts = rowsToShifts(rows)
 
-  return [shifts]
+  return shifts
 }
 
 // const dayCodes = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -88,13 +88,5 @@ exports.detectShifts = functions.https.onCall(async (data, ctx) => {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
   }
 
-  detectText(data.imgBase64)
-    .then(console.log)
-    .catch(console.log)
-
-    // console.log(data.imgBase64.substr(0, 50))
-  // const shifts = await extractShifts(text)
-  // console.log(shifts)
-  // return shifts
-  return {}
+  return detectText(data.imgBase64)
 })

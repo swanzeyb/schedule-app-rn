@@ -49,7 +49,7 @@ export default function HomeScreen({ navigation: { navigate } }) {
       })
 
     detectShifts({ imgBase64 })
-      .then(({ data }) => navigate('Shifts', { shifts: data }))
+      .then(({ data }) => navigate('Shifts', { response: data }))
       .catch(err => console.log(err))
   }
 
