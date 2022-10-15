@@ -1,2 +1,6 @@
-export { default as Button } from './Button'
+// export { default as Button } from './Button'
+export { default as SquareButton } from './SquareButton'
+export { default as RoundedButton } from './RoundedButton'
+export { default as IconButton } from './IconButton'
 export { default as Text } from './Text'
+export { default as ShiftRow } from './ShiftRow'

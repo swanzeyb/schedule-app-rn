@@ -1,14 +1,25 @@
-import { View, Image, Alert } from 'react-native'
-import { useMemo } from 'react'
+import { View, Text } from 'react-native'
+import { useMemo, useReducer } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useState } from 'react'
-import { Text } from '../components'
 import { useGoogleSignIn } from '../hooks'
-import { dateToHourMin, dayToName, createEvent } from '../lib'
+import { searchImage } from '../lib'
+import {
+  ShiftRow,
+  SquareButton,
+  IconButton,
+  RoundedButton
+} from '../components'
+import uniqBy from 'lodash.uniqby'
 import tw from '../tw'
 
+// Images
+const CloseSrc = require('../assets/close-icon.png')
+const PlusSrc = require('../assets/plus-icon.png')
+
+// Constants
 const EVENT_NAME = 'Starbucks'
+const NO_EVENT_NAME = 'No shift found'
 
 // Puts padding 0s to maintain a format length
 function normalizeLength(str, length) {
@@ -56,6 +67,9 @@ function parseAPIResponse(response) {
   return shifts
 }
 
+// Find the day of the week
+const dayCodes = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
 // This converts to shift parts to presentation
 // strings
 function getDisplayValues(startISO, endISO) {
@@ -80,66 +94,93 @@ function getDisplayValues(startISO, endISO) {
   const endIsMidday = end.getUTCHours() > 12 ? 'PM' : 'AM'
   const endTime = `${endHours}:${endMinutes} ${endIsMidday}`
 
-  // Find the day of the week
-  const dayCodes = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
   return {
     key: `${startISO}${endISO}`,
     isToday: isSameDate && isSameMonth,
     dayNum: start.getDate().toString(),
-    shift: `${startTime} - ${endTime}`,
+    title: EVENT_NAME,
+    subtitle: `${startTime} - ${endTime}`,
     dayOfWeek: dayCodes[start.getDay()],
   }
 }
 
-export default function ConfirmScreen({ route, navigation }) {
-  const { getTokens } = useGoogleSignIn()
-  const { response } = route.params
+function formatResponse(response) {
+  const shiftsData = parseAPIResponse(response)
+  const shifts = []
+  for (const [_, shiftData] of Object.entries(shiftsData)) {
+    const { start, end } = shiftData
+    shifts.push(getDisplayValues(start, end))
+  }
+  return shifts
+}
 
-  const [shifts, setShifts] = useState([])
+function reducer(state, action) {
+  switch(action.type) {
+    case 'UPDATE':
+      const newShifts = uniqBy([...state.shifts, ...action.shifts], 'key')
+      return {
+        ...state,
+        shifts: newShifts,
+        hasShiftToday: newShifts.some(shift => shift.isToday),
+      }
+  }
+}
+
+export default function ShiftsScreen({ route, navigation: { goBack } }) {
+  const { getTokens } = useGoogleSignIn()
+  const { initialData } = route.params
+
+  const [state, dispatch] = useReducer(reducer, {
+    hasShiftToday: false,
+    placeholder: {
+      dayNum: new Date().getDate(),
+      dayOfWeek: dayCodes[new Date().getDay()]
+    },
+    shifts: [],
+  })
 
   // We want to only process the data once on mount
   // and avoid computation on re-renders
   useMemo(() => {
-    const shiftsData = parseAPIResponse(response)
-    const display = []
-    for (const [_, shiftData] of Object.entries(shiftsData)) {
-      const { start, end } = shiftData
-      display.push(getDisplayValues(start, end))
-    }
-    setShifts(display)
-  }, [response])
+    const shifts = formatResponse(initialData)
+    dispatch({ type: 'UPDATE', shifts })
+  }, [initialData])
 
-  const Today = (!shifts.some(shift => shift.isToday)) && (
-    <View></View>
-  )
+  const addShifts = async () => {
+    const shifts = await searchImage()
+      .then(formatResponse)
+    dispatch({ type: 'UPDATE', shifts })
+  }
+
+  console.log(JSON.stringify(state, null, 2))
 
   return (
     <SafeAreaView style={tw`flex-1`}>
       <View style={tw`flex-1`}>
         <StatusBar style="auto" />
+        <View style={tw`flex-row justify-between items-center p-3 border-b border-divisor`}>
+          <IconButton onPress={() => goBack()} iconSrc={CloseSrc} />
+          <RoundedButton title="Add to Calendar"/>
+        </View>
         <View style={tw`flex-1 p-3`}>
-          {Today && <Today />}
-          {shifts.map(shift => (
-            <View key={shift.key} style={tw`flex-initial flex-row mb-7`}>
-              <View style={tw`w-11 flex-initial items-center mr-2`}>
-                <Text weight="medium" color={shift.isToday ? 'blue' : 'gray'}>
-                    {shift.dayOfWeek}
-                </Text>
-                <View style={tw.style(shift.isToday && 'bg-blue', 'rounded-full', 'p-2.5')}>
-                  <Text
-                    font="Lato" weight="medium"
-                    color={shift.isToday ? 'white' : 'black'}
-                  >{shift.dayNum}</Text>
-                </View>
-              </View>
-              <View style={tw`flex-1 flex-col bg-green rounded py-2 pl-2 mt-1`}>
-                <Text color="white" weight="medium">{EVENT_NAME}</Text>
-                <Text color="white">{shift.shift}</Text>
-              </View>
-            </View>
+          {(!state.hasShiftToday) && (
+            <ShiftRow
+              isEmpty
+              shift={{
+                isToday: !state.hasShiftToday,
+                dayNum: state.placeholder.dayNum,
+                dayOfWeek: state.placeholder.dayOfWeek,
+                title: NO_EVENT_NAME,
+              }}
+            />
+          )}
+          {state.shifts.map(shift => (
+            <ShiftRow key={shift.key} shift={shift} />
           ))}
         </View>
+      </View>
+      <View style={tw`absolute bottom-3 right-3`}>
+        <SquareButton onPress={() => addShifts()} iconSrc={PlusSrc} />
       </View>
     </SafeAreaView>
   )

@@ -2,9 +2,8 @@
 import { StatusBar } from 'expo-status-bar'
 import { View, Image, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker'
-import functions from '@react-native-firebase/functions'
-import { Button, Text } from '../components'
+import { searchImage } from '../lib'
+import { RoundedButton, Text } from '../components'
 import { useGoogleSignIn } from '../hooks'
 import tw from '../tw'
 
@@ -33,26 +32,6 @@ export default function HomeScreen({ navigation: { navigate } }) {
       })
   }
 
-  const pickImage = async () => {
-    const fns = functions() //'us-central1'
-    fns.useEmulator('100.114.76.77', 5001)
-    const detectShifts = fns.httpsCallable('detectShifts')
-
-    const imgBase64 = await launchImageLibraryAsync({
-        mediaTypes: MediaTypeOptions.Images,
-        // allowsEditing: true,
-        base64: true,
-        quality: 1,
-      }).then(result => {
-        if (!result.cancelled) return result.base64
-        // if (!result.cancelled) return `data:image/jpeg;base64,${result.base64}`
-      })
-
-    detectShifts({ imgBase64 })
-      .then(({ data }) => navigate('Shifts', { response: data }))
-      .catch(err => console.log(err))
-  }
-
   const addSchedule = () => {
     if (!user) {
       Alert.alert(
@@ -62,7 +41,8 @@ export default function HomeScreen({ navigation: { navigate } }) {
         { text: 'SIGN IN', onPress: onSignIn }
       ])
     } else {
-      pickImage()
+      searchImage()
+        .then(data => navigate('Shifts', { initialData: data }))
     }
   }
 
@@ -75,7 +55,7 @@ export default function HomeScreen({ navigation: { navigate } }) {
           <Text font="Poppins" style={tw`text-2xl text-center`}>Sync Your Schedule</Text>
           <Text style={tw`text-sm pt-1.5 text-center`}>Easily add your work schedule to{'\n'}Google Calendar</Text>
         </View>
-        <Button
+        <RoundedButton
           onPress={addSchedule}
           title="Add Schedule"
         />
