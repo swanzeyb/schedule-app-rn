@@ -94,10 +94,10 @@ function rowsToShifts(rows) {
     const location = row[1]?.[2]
 
     // Only continue if this row contains all of the string parts of a shift
-    const hasAllParts = [day, start, end, location]
-      .some(part => part !== undefined)
+    const hasNilValues = [day, start, end]
+      .some(part => part == undefined)
 
-    if (hasAllParts) {
+    if (!hasNilValues) {
       // Convert times to 24hr format
       start = to24HRFormat(start)
       end = to24HRFormat(end)

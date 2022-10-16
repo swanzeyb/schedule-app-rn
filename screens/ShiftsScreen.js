@@ -3,7 +3,7 @@ import { useMemo, useReducer } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useGoogleSignIn } from '../hooks'
-import { searchImage } from '../lib'
+import { searchImage, createEvent } from '../lib'
 import {
   ShiftRow,
   SquareButton,
@@ -11,6 +11,7 @@ import {
   RoundedButton
 } from '../components'
 import uniqBy from 'lodash.uniqby'
+import sortBy from 'lodash.sortby'
 import tw from '../tw'
 
 // Images
@@ -49,7 +50,7 @@ function makeISOString(DD, hhmm) {
   mm = normalizeLength(mm, 2)
   const MM = normalizeLength(currMM.toString(), 2) // Month
   DD = normalizeLength(DD, 2) // Day
-  return `${yyyy}-${MM}-${DD}T${hh}:${mm}Z` // ISO string
+  return `${yyyy}-${MM}-${DD}T${hh}:${mm}:00.000` // ISO string
 }
 
 // This converts the API results from strings
@@ -72,7 +73,7 @@ const dayCodes = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 // This converts to shift parts to presentation
 // strings
-function getDisplayValues(startISO, endISO) {
+function getDisplayValues(startISO, endISO, day) {
   const start = new Date(startISO)
   const end = new Date(endISO)
   const isSameDate = new Date().getDate() === start.getDate()
@@ -97,7 +98,7 @@ function getDisplayValues(startISO, endISO) {
   return {
     key: `${startISO}${endISO}`,
     isToday: isSameDate && isSameMonth,
-    dayNum: start.getDate().toString(),
+    dayNum: start.getUTCDate(), // Leave this a Number so we can sort
     title: EVENT_NAME,
     subtitle: `${startTime} - ${endTime}`,
     dayOfWeek: dayCodes[start.getDay()],
@@ -109,7 +110,10 @@ function formatResponse(response) {
   const shifts = []
   for (const [_, shiftData] of Object.entries(shiftsData)) {
     const { start, end } = shiftData
-    shifts.push(getDisplayValues(start, end))
+    shifts.push({
+      start, end,
+      ...getDisplayValues(start, end),
+    })
   }
   return shifts
 }
@@ -117,16 +121,17 @@ function formatResponse(response) {
 function reducer(state, action) {
   switch(action.type) {
     case 'UPDATE':
-      const newShifts = uniqBy([...state.shifts, ...action.shifts], 'key')
+      const uniqShifts = uniqBy([...state.shifts, ...action.shifts], 'key')
+      const sortedShifts = sortBy(uniqShifts, 'dayNum')
       return {
         ...state,
-        shifts: newShifts,
-        hasShiftToday: newShifts.some(shift => shift.isToday),
+        shifts: sortedShifts,
+        hasShiftToday: sortedShifts.some(shift => shift.isToday),
       }
   }
 }
 
-export default function ShiftsScreen({ route, navigation: { goBack } }) {
+export default function ShiftsScreen({ route, navigation: { goBack, navigate } }) {
   const { getTokens } = useGoogleSignIn()
   const { initialData } = route.params
 
@@ -152,7 +157,20 @@ export default function ShiftsScreen({ route, navigation: { goBack } }) {
     dispatch({ type: 'UPDATE', shifts })
   }
 
-  console.log(JSON.stringify(state, null, 2))
+  const uploadShifts = async () => {
+    const { accessToken } = await getTokens()
+    const eventPromises = []
+    for (let i = 0; i < state.shifts.length; i++) {
+      const { title, start, end } = state.shifts[i]
+      eventPromises.push(createEvent(title, start, end, accessToken))
+    }
+    Promise.all(eventPromises)
+      .then(() => navigate('Confirm', {
+        title: 'Shifts Added to\nYour Calendar',
+        button: 'Continue',
+        nextScreen: 'Home',
+      }))
+  }
 
   return (
     <SafeAreaView style={tw`flex-1`}>
@@ -160,7 +178,7 @@ export default function ShiftsScreen({ route, navigation: { goBack } }) {
         <StatusBar style="auto" />
         <View style={tw`flex-row justify-between items-center p-3 border-b border-divisor`}>
           <IconButton onPress={() => goBack()} iconSrc={CloseSrc} />
-          <RoundedButton title="Add to Calendar"/>
+          <RoundedButton onPress={() => uploadShifts()} title="Add to Calendar"/>
         </View>
         <View style={tw`flex-1 p-3`}>
           {(!state.hasShiftToday) && (

@@ -1,7 +1,7 @@
 import { View, Image, Alert } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Button, Text } from '../components'
+import { RoundedButton, Text } from '../components'
 import tw from '../tw'
 
 export default function ConfirmScreen({ route, navigation: { navigate } }) {
@@ -17,7 +17,7 @@ export default function ConfirmScreen({ route, navigation: { navigate } }) {
             <Text style={tw`text-sm pt-1.5 text-center`}>{subtitle}</Text>
           )}
         </View>
-        <Button
+        <RoundedButton
           onPress={() => navigate(nextScreen)}
           title={button}
           style={tw`mt-8`}
