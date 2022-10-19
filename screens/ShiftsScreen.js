@@ -159,17 +159,15 @@ export default function ShiftsScreen({ route, navigation: { goBack, navigate } }
 
   const uploadShifts = async () => {
     const { accessToken } = await getTokens()
-    const eventPromises = []
     for (let i = 0; i < state.shifts.length; i++) {
       const { title, start, end } = state.shifts[i]
-      eventPromises.push(createEvent(title, start, end, accessToken))
+      await createEvent(title, start, end, accessToken)
     }
-    Promise.all(eventPromises)
-      .then(() => navigate('Confirm', {
-        title: 'Shifts Added to\nYour Calendar',
-        button: 'Continue',
-        nextScreen: 'Home',
-      }))
+    navigate('Confirm', {
+      title: 'Shifts Added to\nYour Calendar',
+      button: 'Continue',
+      nextScreen: 'Home',
+    })
   }
 
   return (

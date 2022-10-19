@@ -53,7 +53,7 @@ export default function HomeScreen({ navigation: { navigate } }) {
         <Image source={LogoSrc} />
         <View>
           <Text font="Poppins" style={tw`text-2xl text-center`}>Sync Your Schedule</Text>
-          <Text style={tw`text-sm pt-1.5 text-center`}>Easily add your work schedule to{'\n'}Google Calendar</Text>
+          <Text style={tw`text-sm pt-1.5 text-center`}>Easily add your Starbucks schedule{'\n'}to Google Calendar</Text>
         </View>
         <RoundedButton
           onPress={addSchedule}

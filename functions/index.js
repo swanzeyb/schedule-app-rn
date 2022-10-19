@@ -9,7 +9,6 @@ const {
 
 // Instantiate a vision client
 const client = new vision.ImageAnnotatorClient()
-// const fs = require('fs')
 
 async function detectText(imgBase64) {
   const results = await client.annotateImage({
@@ -20,7 +19,6 @@ async function detectText(imgBase64) {
     features: [{type: 'DOCUMENT_TEXT_DETECTION'}],
   })
 
-  // const results = JSON.parse(fs.readFileSync('results.json'))
   const blocks = ocrResultsToBlocks(results)
   const rows = blocksToRows(blocks)
   const shifts = rowsToShifts(rows)
