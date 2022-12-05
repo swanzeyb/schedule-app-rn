@@ -3,7 +3,7 @@
 
 
 ## What ##
-This app takes many pictures of my Starbucks work schedule, and uploads my shifts to Google Calendar.
+This app lets the user takes many pictures of their Starbucks work schedule, and uploads the shifts to their Google Calendar.
 
 ## Tech ##
 When a user uploads an image, an API request is sent to a custom Firebase Cloud Function. This function calls Google's OCR AI to recognize text. A seperate function parses the text to find work shifts.
